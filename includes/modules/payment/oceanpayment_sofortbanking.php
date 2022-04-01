@@ -1,9 +1,8 @@
 <?php
-class oceanpayment_p24{
+class oceanpayment_sofortbanking{
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";
-	const Abnormal 		= "[Abnormal]";
 	
 	
 	var $code, $title, $description, $enabled;
@@ -23,40 +22,38 @@ class oceanpayment_p24{
 	var $order_status = DEFAULT_ORDERS_STATUS_ID;
 	
 	
-	function oceanpayment_p24() {	
+	function oceanpayment_sofortbanking() {	
 		global $order;
 		
-		$this->code = 'oceanpayment_p24';
+		$this->code = 'oceanpayment_sofortbanking';
 		
 		if ($_GET['main_page'] != '') {		
-			$this->title = MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CATALOG_TITLE; // Payment Module title in Catalog		
+			$this->title = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CATALOG_TITLE; // Payment Module title in Catalog		
 		} else {		
-			$this->title = MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_ADMIN_TITLE; // Payment Module title in Admin		
+			$this->title = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_ADMIN_TITLE; // Payment Module title in Admin		
 		}
 		
-		$this->description = MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_DESCRIPTION;		
-		$this->sort_order = MODULE_PAYMENT_OCEANPAYMENT_P24_SORT_ORDER;		
-		$this->enabled = ((MODULE_PAYMENT_OCEANPAYMENT_P24_STATUS == 'True') ? true : false);
+		$this->description = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_DESCRIPTION;		
+		$this->sort_order = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SORT_ORDER;		
+		$this->enabled = ((MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_STATUS == 'True') ? true : false);
 		
-		if ((int)MODULE_PAYMENT_OCEANPAYMENT_P24_PENDING_STATUS_ID > 0) {		
-			$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_P24_PENDING_STATUS_ID;		
+		if ((int)MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_PENDING_STATUS_ID > 0) {		
+			$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_PENDING_STATUS_ID;		
 		}		
 		
 		if (is_object($order)) $this->update_status();
 		
-		$this->form_action_url = MODULE_PAYMENT_OCEANPAYMENT_P24_HANDLER;		
-		
+		$this->form_action_url = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_HANDLER;		
 		
 	}
-	
 	
 	
 	function update_status() {	
 		global $order, $db;
 	
-		if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_OCEANPAYMENT_P24_ZONE > 0) ) {
+		if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_ZONE > 0) ) {
 			$check_flag = false;	
-			$check_query = $db->Execute("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_OCEANPAYMENT_P24_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
+			$check_query = $db->Execute("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
 	
 			while (!$check_query->EOF) {	
 				if ($check_query->fields['zone_id'] < 1) {	
@@ -83,23 +80,27 @@ class oceanpayment_p24{
 		return false;	
 	}
 	
+	
 	function selection() {	
 		return array('id' => $this->code,
-				'module' => MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CATALOG_LOGO,
-				'icon' => MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CATALOG_LOGO
+				'module' => MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CATALOG_LOGO,
+				'icon' => MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CATALOG_LOGO
 		);	
 	}	
 
+	
 	function pre_confirmation_check() {
 		return false;
 	}	
 	
+	
 	function confirmation() {	
-		return array('title' => MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_DESCRIPTION);	
+		return array('title' => MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_DESCRIPTION);	
 	}
 	
+	
 	function process_button() {	
-		global $db, $order, $currencies;
+		global $db, $order, $currencies,$order_totals;
 	
 		require_once(DIR_WS_CLASSES . 'order.php');	
 			 
@@ -120,21 +121,19 @@ class oceanpayment_p24{
 		 
 		//获取订单详情
 		$productDetails = $this->getProductItems($order->products);
-		
 
-		
 		//账户
-		$account           = MODULE_PAYMENT_OCEANPAYMENT_P24_ACCOUNT;				
+		$account           = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_ACCOUNT;				
 		//终端号
-		$terminal          = MODULE_PAYMENT_OCEANPAYMENT_P24_TERMINAL;		
+		$terminal          = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TERMINAL;		
 		//securecode
-		$secureCode        = MODULE_PAYMENT_OCEANPAYMENT_P24_SCODE;				
+		$secureCode        = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SCODE;				
 		//返回地址
-		$backUrl           = zen_href_link('checkout_oceanpayment_p24', '', 'SSL');  // $backUrl = zen_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
+		$backUrl           = zen_href_link('checkout_oceanpayment_sofortbanking', '', 'SSL');  // $backUrl = zen_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
 		//服务器响应地址
-		$noticeUrl         = zen_href_link('checkout_oceanpayment_p24', '', 'SSL');
+		$noticeUrl         = zen_href_link('checkout_oceanpayment_sofortbanking', '', 'SSL');
 		//支付方式
-		$methods           = 'Przelewy24';
+		$methods           = 'Directpay';
 		//订单号
 		$order_number      = $order_id;
 		//支付币种
@@ -189,18 +188,12 @@ class oceanpayment_p24{
 		//购物车系统类型
 		$cart_info         = 'zencart';
 		//插件版本
-		$cart_api          = 'V1.6.0';
+		$cart_api          = 'V1.7.1';
 		
-
-
-
 		//记录发送到oceanpayment的post log
 		$filedate = date('Y-m-d');
-		 
 		$postdate = date('Y-m-d H:i:s');
-		 
 		$newfile  = fopen( "oceanpayment_log/" . $filedate . ".log", "a+" );
-		 
 		$post_log = $postdate."[POST to Oceanpayment]\r\n" .
 				"account = "           .$account . "\r\n".
 				"terminal = "          .$terminal . "\r\n".
@@ -236,22 +229,11 @@ class oceanpayment_p24{
 				"order_notes = "       .$order_notes . "\r\n";
 		 
 		$post_log = $post_log . "*************************************\r\n";
-		 
 		$post_log = $post_log.file_get_contents( "oceanpayment_log/" . $filedate . ".log");
-		 
 		$filename = fopen( "oceanpayment_log/" . $filedate . ".log", "r+" );
-		 
 		fwrite($filename,$post_log);
-		 
 		fclose($filename);
-		 
 		fclose($newfile);
-		
-		
-		
-		
-		
-		
 		
 		$process_button_string = zen_draw_hidden_field('account', $account) .
 		                         zen_draw_hidden_field('terminal', $terminal) .
@@ -285,17 +267,13 @@ class oceanpayment_p24{
 		                         zen_draw_hidden_field('productNum',$productNum).
 		                         zen_draw_hidden_field('cart_info',$cart_info).
 		                         zen_draw_hidden_field('cart_api',$cart_api);
-
 	
 		return $process_button_string;
-	
 	}
 	
 	
 	function before_process() {	
 		global $_POST, $order, $currencies, $messageStack,$db;
-	
-
 		//返回商户号
 		$account          = $_REQUEST['account'];
 		//返回终端号
@@ -323,7 +301,7 @@ class oceanpayment_p24{
 		//消费者所在国
 		$payment_country  = $_REQUEST['payment_country'];
 		//获取本地的code值
-		$secureCode       = MODULE_PAYMENT_OCEANPAYMENT_P24_SCODE;
+		$secureCode       = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SCODE;
 		//返回支付信用卡卡号
 		$card_number      = $_REQUEST['card_number'];
 		//返回交易类型
@@ -339,11 +317,8 @@ class oceanpayment_p24{
 		$getErrorCode 	 		  	 = explode(':', $payment_details);	
 		$_SESSION['errorCode']       = $getErrorCode[0];
 		
-		
 		if(isset($_REQUEST['notice_type'])){
-			
 			$this->notice_process();
-			
 		}
 		
 
@@ -352,7 +327,7 @@ class oceanpayment_p24{
 	
 			if ($payment_status == 1) {				 
 				//支付成功
-				$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_P24_SUCCESS_STATUS_ID;
+				$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SUCCESS_STATUS_ID;
 				$comments           = 'Success.';
 				$messageStack->add_session('checkout_success', $comments . $payment_details, 'success');
 				$customer_notified  = 1;			 
@@ -361,12 +336,12 @@ class oceanpayment_p24{
 				
 				//是否预授权交易
 				if($payment_authType == 1){
-					$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_P24_SUCCESS_STATUS_ID;
+					$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SUCCESS_STATUS_ID;
 					$comments           = 'Success.';
 					$messageStack->add_session('checkout_success', $comments . $payment_details, 'success');
 					$customer_notified  = 1;
 				}else{
-					$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_P24_WAITING_PROCESS_STATUS_ID;
+					$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_WAITING_PROCESS_STATUS_ID;
 					$comments           = 'Waiting for the bank processing.';
 					$messageStack->add_session('checkout_waiting', $comments . $payment_details, 'caution');
 					$customer_notified  = 0;
@@ -374,7 +349,7 @@ class oceanpayment_p24{
 				
 			}elseif($payment_status == 0){				 
 				//支付失败
-				$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_P24_FAILURE_STATUS_ID;
+				$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_FAILURE_STATUS_ID;
 				$comments           = 'Failure.';
 				$messageStack->add_session('checkout_failure', $comments . $payment_details, 'error');
 				$customer_notified  = 0;				 
@@ -382,13 +357,11 @@ class oceanpayment_p24{
 			 
 		}else{			 
 			//支付失败
-			$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_P24_FAILURE_STATUS_ID;
+			$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_FAILURE_STATUS_ID;
 			$comments           = 'Failure.';
 			$messageStack->add_session('checkout_failure', $comments . $payment_details, 'error');
 			$customer_notified  = 0;			 
 		}
-	
-		
 		
 		//检测是否推送 1为推送  0为正常浏览器跳转
 		if($_REQUEST['response_type'] == 1){
@@ -416,9 +389,7 @@ class oceanpayment_p24{
 			}else{
 				$db->Execute("UPDATE " . TABLE_ORDERS  . " SET orders_status = " . $this->order_status . " WHERE orders_id = '" . $order_number . "'");
 			}
-			
 		}
-		
 		
 		$this->returnLog($logtype);
 		
@@ -431,18 +402,16 @@ class oceanpayment_p24{
 		);
 		zen_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
 		
-
+		if($_REQUEST['response_type'] == 1){
+			echo "receive-ok";
+			exit;
+		}
 		 
 	}
 	
 
-
-
-
 	function notice_process() {
 		global $_POST, $order,$db;
-		
-	
 		//返回商户号
 		$account           = $_REQUEST['account'];	
 		//返回终端号
@@ -458,7 +427,7 @@ class oceanpayment_p24{
 		//具体详细信息
 		$push_details  	   = $_REQUEST['push_details'];		
 		//获取securecode
-		$securecode        = MODULE_PAYMENT_OCEANPAYMENT_P24_SCODE;		
+		$securecode        = MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SCODE;		
 		//订单支付时间
 		$payment_dateTime  = $_REQUEST['payment_dateTime'];		
 		//推送时间
@@ -469,14 +438,10 @@ class oceanpayment_p24{
 		$back_signValue    = $_REQUEST['signValue'];		
 		//SHA256加密
 		$local_signValue   = hash("sha256",$account.$terminal.$order_number.$payment_id.$push_id.$push_status.$push_details.$securecode);
-			
 		
 		//异常交易推送类型
 		$this->abnormalLog(self::Abnormal);
-		
 		if(isset($_REQUEST['notice_type'])){
-			
-			
 			//加密串校验
 			if (strtolower($local_signValue) == strtolower($back_signValue)) {
 
@@ -523,18 +488,13 @@ class oceanpayment_p24{
 							
 						break;
 					default:
-				
-				
 				}
-				
-				
 			}
 			
 			
 			//获取原本的订单状态
 			$thisOrderStatus = $db->Execute("SELECT orders_status FROM  " . TABLE_ORDERS  . " WHERE orders_id = '" . $order_number . "'");
 			$original_orderStatus = $thisOrderStatus->fields['orders_status'];
-			
 			
 			$comments = self::Abnormal . $AbnormalResult . '(' . 'payment_id: ' . $payment_id . ' | push_id: ' . $push_id . ' | push_dateTime: ' . $push_dateTime . ' | push_details: ' . $push_details . ')';
 			$sql_data_array = array('orders_id'         => (int)$order_number,
@@ -544,44 +504,24 @@ class oceanpayment_p24{
 					'customer_notified' => 1
 			);
 			zen_db_perform(TABLE_ORDERS_STATUS_HISTORY, $sql_data_array);
-			
-			
-			
-			
 		}
-		
-		
-		exit;
-		
-		
+// 		exit;		
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	function after_process() {	
 	}
-	
-	
+		
 	
 	function output_error() {	
 		return false;	
 	}
-	
+		
 	
 	function check() {	
 		global $db;
-	
 		if (!isset($this->_check)) {	
-			$check_query = $db->Execute("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_OCEANPAYMENT_P24_STATUS'");	
+			$check_query = $db->Execute("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_STATUS'");	
 			$this->_check = $check_query->RecordCount();	
 		}	
 		return $this->_check;	
@@ -590,62 +530,57 @@ class oceanpayment_p24{
 	
 	function install() {	
 		global $db, $language, $module_type;
-	
-		if (!defined('MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_1_1')) include(DIR_FS_CATALOG_LANGUAGES . $_SESSION['language'] . '/modules/' . $module_type . '/' . $this->code . '.php');
-		
+		if (!defined('MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_1_1')) include(DIR_FS_CATALOG_LANGUAGES . $_SESSION['language'] . '/modules/' . $module_type . '/' . $this->code . '.php');
 		//在数据库中插入模块设置(是否启用插件)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_1_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_STATUS', 'True', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_1_2 . "', '6', '0', 'zen_cfg_select_option(array(\'True\', \'False\'), ', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_1_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_STATUS', 'True', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_1_2 . "', '6', '0', 'zen_cfg_select_option(array(\'True\', \'False\'), ', now())");
 		//在数据库中插入模块设置(填写账户)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_3_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_ACCOUNT', '', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_3_2 . "', '6', '2', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_3_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_ACCOUNT', '', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_3_2 . "', '6', '2', now())");
 		//在数据库中插入模块设置(填写终端号)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_4_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_TERMINAL', '', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_4_2 . "', '6', '4', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_4_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TERMINAL', '', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_4_2 . "', '6', '4', now())");
 		//在数据库中插入模块设置(终端安全码)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_5_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_SCODE', '', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_5_2 . "', '6', '6', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_5_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SCODE', '', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_5_2 . "', '6', '6', now())");
 		//在数据库中插入模块设置(支付地区)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_6_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_ZONE', '0', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_6_2 . "', '6', '8', 'zen_get_zone_class_title', 'zen_cfg_pull_down_zone_classes(', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_6_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_ZONE', '0', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_6_2 . "', '6', '8', 'zen_get_zone_class_title', 'zen_cfg_pull_down_zone_classes(', now())");
 		//在数据库中插入模块设置(默认订单状态)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_7_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_PENDING_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_7_2 . "', '6', '10', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_7_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_PENDING_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_7_2 . "', '6', '10', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
 		//在数据库中插入模块设置(成功订单状态)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_8_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_SUCCESS_STATUS_ID', '2', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_8_2 . "', '6', '12', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_8_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SUCCESS_STATUS_ID', '2', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_8_2 . "', '6', '12', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
 		//在数据库中插入模块设置(失败订单状态)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_9_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_FAILURE_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_9_2 . "', '6', '14', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_9_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_FAILURE_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_9_2 . "', '6', '14', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
 		//在数据库中插入模块设置(待处理订单状态)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_10_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_WAITING_PROCESS_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_10_2 . "', '6', '16', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_10_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_WAITING_PROCESS_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_10_2 . "', '6', '16', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
 		//在数据库中插入模块设置(支付模块排序)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_11_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_SORT_ORDER', '0', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_11_2 . "', '6', '18', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_11_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SORT_ORDER', '0', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_11_2 . "', '6', '18', now())");
 		//在数据库中插入模块设置(支付提交地址)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_12_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_HANDLER', 'https://secure.oceanpayment.com/gateway/service/test', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_12_2 . "', '6', '20', '', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_12_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_HANDLER', 'https://secure.oceanpayment.com/gateway/service/test', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_12_2 . "', '6', '20', '', now())");
 		//在数据库中插入模块设置(响应代码)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_14_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_RESPONSE_CODE', 'false', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_14_2 . "', '6', '22', 'zen_cfg_select_option(array(\'Online\', \'Local\'), ', now())");
-		
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_14_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_RESPONSE_CODE', 'false', '" . MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TEXT_CONFIG_14_2 . "', '6', '22', 'zen_cfg_select_option(array(\'Online\', \'Local\'), ', now())");
 		
 	}
 	
 	
 	function remove() {	
 		global $db;	
-		$db->Execute("delete from " . TABLE_CONFIGURATION . " where configuration_key LIKE  'MODULE_PAYMENT_OCEANPAYMENT_P24%'");	
+		$db->Execute("delete from " . TABLE_CONFIGURATION . " where configuration_key LIKE  'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING%'");	
 	}
 	
 	
 	function keys() {	
 		return array(	
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_STATUS',
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_ACCOUNT',
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_TERMINAL',
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_SCODE',
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_ZONE',
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_PENDING_STATUS_ID',
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_SUCCESS_STATUS_ID',
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_FAILURE_STATUS_ID',
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_WAITING_PROCESS_STATUS_ID',
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_SORT_ORDER',
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_HANDLER',
-				'MODULE_PAYMENT_OCEANPAYMENT_P24_RESPONSE_CODE',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_STATUS',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_ACCOUNT',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_TERMINAL',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SCODE',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_ZONE',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_PENDING_STATUS_ID',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SUCCESS_STATUS_ID',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_FAILURE_STATUS_ID',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_WAITING_PROCESS_STATUS_ID',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_SORT_ORDER',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_HANDLER',
+				'MODULE_PAYMENT_OCEANPAYMENT_SOFORTBANKING_RESPONSE_CODE',
 		);	
 	}
-	
-	
 	
 	
 	/**
@@ -655,11 +590,8 @@ class oceanpayment_p24{
 	public function returnLog($logtype){
 	
 		$filedate   = date('Y-m-d');
-	
 		$returndate = date('Y-m-d H:i:s');
-			
 		$newfile    = fopen( "oceanpayment_log/" . $filedate . ".log", "a+" );
-			
 		$return_log = $returndate . $logtype . "\r\n".
 				"response_type = "       . $_REQUEST['response_type'] . "\r\n".
 				"account = "             . $_REQUEST['account'] . "\r\n".
@@ -679,15 +611,10 @@ class oceanpayment_p24{
 				"payment_risk = "        . $_REQUEST['payment_risk'] . "\r\n";
 	
 		$return_log = $return_log . "*************************************\r\n";
-			
 		$return_log = $return_log.file_get_contents( "oceanpayment_log/" . $filedate . ".log");
-			
 		$filename   = fopen( "oceanpayment_log/" . $filedate . ".log", "r+" );
-			
 		fwrite($filename,$return_log);
-	
 		fclose($filename);
-	
 		fclose($newfile);
 	
 	}
@@ -697,13 +624,9 @@ class oceanpayment_p24{
 	 * Abnormal log
 	 */
 	public function abnormalLog($logType){
-	
 		$filedate   = $logType . date('Y-m-d');
-	
 		$returndate = date('Y-m-d H:i:s');
-			
 		$newfile    = fopen( "oceanpayment_log/" . $filedate . ".log", "a+" );
-			
 		$return_log = $returndate . $logType . "\r\n".
 				"notice_type = "       	 . $_REQUEST['notice_type'] . "\r\n".
 				"account = "             . $_REQUEST['account'] . "\r\n".
@@ -718,23 +641,13 @@ class oceanpayment_p24{
 				"signValue = "        	 . $_REQUEST['signValue'] . "\r\n";
 	
 		$return_log = $return_log . "*************************************\r\n";
-			
 		$return_log = $return_log.file_get_contents( "oceanpayment_log/" . $filedate . ".log");
-			
 		$filename   = fopen( "oceanpayment_log/" . $filedate . ".log", "r+" );
-			
 		fwrite($filename,$return_log);
-	
 		fclose($filename);
-	
 		fclose($newfile);
-	
-	
+		
 	}
-	
-	
-	
-	
 	
 	
 	/**
@@ -758,7 +671,7 @@ class oceanpayment_p24{
 		$productDetails['productNum'] = implode(';', $productNum);
 	
 		return $productDetails;
-	
+		
 	}
 	
 	
@@ -768,27 +681,12 @@ class oceanpayment_p24{
 	 * 钱海支付Html特殊字符转义
 	 */
 	function OceanHtmlSpecialChars($parameter){
-	
 		//去除前后空格
 		$parameter = trim($parameter);
-	
 		//转义"双引号,<小于号,>大于号,'单引号
 		$parameter = str_replace(array("<",">","'","\""),array("&lt;","&gt;","&#039;","&quot;"),$parameter);
-	
 		return $parameter;
-	
 	}
 	
 	
-	
 }
-
-
-
-
-
-
-
-
-
-
