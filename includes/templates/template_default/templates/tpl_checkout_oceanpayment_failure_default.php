@@ -13,7 +13,7 @@
  */
 ?>
 <div class="centerColumn" id="checkoutSuccess">
-<?php echo $messageStack->output('checkout_waiting');?>
+<?php echo $messageStack->output('checkout_failure');?>
 <!--bof -gift certificate- send or spend box-->
 <?php
 // only show when there is a GV balance
@@ -30,11 +30,16 @@
 <h1 id="checkoutSuccessHeading"><?php echo HEADING_TITLE; ?></h1>
 <div id="checkoutSuccessOrderNumber"><?php echo TEXT_YOUR_ORDER_NUMBER . $zv_orders_id; ?></div>
 <div id="checkoutSuccessMainContent" class="content">
+<div style="float:left;height:200px;margin:20px">
+<?php echo LOGO;?>
+</div>
 <div style="padding:20px">
 <?php
+
 echo $payment_details;
 echo "<br>";
 echo $payment_solutions;
+
 ?>
 </div>
 </div>

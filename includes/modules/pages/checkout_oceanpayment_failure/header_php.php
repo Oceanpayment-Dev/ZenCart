@@ -37,8 +37,14 @@ $order_summary = $_SESSION['order_summary'];
 unset($_SESSION['order_summary']);
 unset($_SESSION['order_number_created']);
 
+
+
 $payment_details = isset($_SESSION['payment_details']) ? $_SESSION['payment_details'] : '';
 $payment_solutions = isset($_SESSION['payment_solutions']) ? $_SESSION['payment_solutions'] : '';
+
+
+
+
 
 
 // This should be last line of the script:
