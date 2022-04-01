@@ -1,5 +1,5 @@
 <?php
-class oceanpayment_ideal{
+class oceanpayment_oxxo{
 	
 	const PUSH 			= "[PUSH]";
 	const BrowserReturn = "[Browser Return]";
@@ -23,28 +23,28 @@ class oceanpayment_ideal{
 	var $order_status = DEFAULT_ORDERS_STATUS_ID;
 	
 	
-	function oceanpayment_ideal() {	
+	function oceanpayment_oxxo() {	
 		global $order;
 		
-		$this->code = 'oceanpayment_ideal';
+		$this->code = 'oceanpayment_oxxo';
 		
 		if ($_GET['main_page'] != '') {		
-			$this->title = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CATALOG_TITLE; // Payment Module title in Catalog		
+			$this->title = MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CATALOG_TITLE; // Payment Module title in Catalog		
 		} else {		
-			$this->title = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_ADMIN_TITLE; // Payment Module title in Admin		
+			$this->title = MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_ADMIN_TITLE; // Payment Module title in Admin		
 		}
 		
-		$this->description = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_DESCRIPTION;		
-		$this->sort_order = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SORT_ORDER;		
-		$this->enabled = ((MODULE_PAYMENT_OCEANPAYMENT_IDEAL_STATUS == 'True') ? true : false);
+		$this->description = MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_DESCRIPTION;		
+		$this->sort_order = MODULE_PAYMENT_OCEANPAYMENT_OXXO_SORT_ORDER;		
+		$this->enabled = ((MODULE_PAYMENT_OCEANPAYMENT_OXXO_STATUS == 'True') ? true : false);
 		
-		if ((int)MODULE_PAYMENT_OCEANPAYMENT_IDEAL_PENDING_STATUS_ID > 0) {		
-			$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_PENDING_STATUS_ID;		
+		if ((int)MODULE_PAYMENT_OCEANPAYMENT_OXXO_PENDING_STATUS_ID > 0) {		
+			$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_OXXO_PENDING_STATUS_ID;		
 		}		
 		
 		if (is_object($order)) $this->update_status();
 		
-		$this->form_action_url = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_HANDLER;				
+		$this->form_action_url = MODULE_PAYMENT_OCEANPAYMENT_OXXO_HANDLER;				
 		
 	}
 		
@@ -52,9 +52,9 @@ class oceanpayment_ideal{
 	function update_status() {	
 		global $order, $db;
 	
-		if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_OCEANPAYMENT_IDEAL_ZONE > 0) ) {
+		if ( ($this->enabled == true) && ((int)MODULE_PAYMENT_OCEANPAYMENT_OXXO_ZONE > 0) ) {
 			$check_flag = false;	
-			$check_query = $db->Execute("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
+			$check_query = $db->Execute("select zone_id from " . TABLE_ZONES_TO_GEO_ZONES . " where geo_zone_id = '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_ZONE . "' and zone_country_id = '" . $order->billing['country']['id'] . "' order by zone_id");
 	
 			while (!$check_query->EOF) {	
 				if ($check_query->fields['zone_id'] < 1) {	
@@ -81,8 +81,8 @@ class oceanpayment_ideal{
 	
 	function selection() {	
 		return array('id' => $this->code,
-				'module' => MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CATALOG_LOGO,
-				'icon' => MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CATALOG_LOGO
+				'module' => MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CATALOG_LOGO,
+				'icon' => MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CATALOG_LOGO
 		);	
 	}	
 
@@ -91,7 +91,7 @@ class oceanpayment_ideal{
 	}	
 	
 	function confirmation() {	
-		return array('title' => MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_DESCRIPTION);	
+		return array('title' => MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_DESCRIPTION);	
 	}
 	
 	function process_button() {	
@@ -117,17 +117,17 @@ class oceanpayment_ideal{
 		//获取订单详情
 		$productDetails = $this->getProductItems($order->products);				
 		//账户
-		$account           = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_ACCOUNT;				
+		$account           = MODULE_PAYMENT_OCEANPAYMENT_OXXO_ACCOUNT;				
 		//终端号
-		$terminal          = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TERMINAL;		
+		$terminal          = MODULE_PAYMENT_OCEANPAYMENT_OXXO_TERMINAL;		
 		//securecode
-		$secureCode        = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SCODE;				
+		$secureCode        = MODULE_PAYMENT_OCEANPAYMENT_OXXO_SCODE;				
 		//返回地址
-		$backUrl           = zen_href_link('checkout_oceanpayment_ideal', '', 'SSL');  // $backUrl = zen_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
+		$backUrl           = zen_href_link('checkout_oceanpayment_oxxo', '', 'SSL');  // $backUrl = zen_href_link(FILENAME_CHECKOUT_PROCESS, '', 'SSL');
 		//服务器响应地址
-		$noticeUrl         = zen_href_link('checkout_oceanpayment_ideal', '', 'SSL');
+		$noticeUrl         = zen_href_link('checkout_oceanpayment_oxxo', '', 'SSL');
 		//支付方式
-		$methods           = 'iDEAL';
+		$methods           = 'OXXO';
 		//订单号
 		$order_number      = $order_id;
 		//支付币种
@@ -183,6 +183,12 @@ class oceanpayment_ideal{
 		$cart_info         = 'zencart';
 		//插件版本
 		$cart_api          = 'V1.7.0';
+		//OXXO cpf
+		$pay_cpf  		   = $this->random(10);
+		//OXXO 银行代码
+		$pay_bankCode  	   = 'OX';
+		//OXXO 国家代码
+		$pay_countryCode   = 'MX';
 
 
 
@@ -223,7 +229,10 @@ class oceanpayment_ideal{
 				"cart_info = "         .$cart_info . "\r\n".
 				"cart_api = "          .$cart_api . "\r\n".
 				"order_notes = "       .$order_notes . "\r\n";
-						 
+				"pay_cpf = "  		   .$pay_cpf . "\r\n".
+				"pay_bankCode = "  	   .$pay_bankCode . "\r\n".
+				"pay_countryCode = "   .$pay_countryCode . "\r\n";
+		 
 		$post_log = $post_log . "*************************************\r\n";		 
 		$post_log = $post_log.file_get_contents( "oceanpayment_log/" . $filedate . ".log");		 
 		$filename = fopen( "oceanpayment_log/" . $filedate . ".log", "r+" );		 
@@ -263,7 +272,9 @@ class oceanpayment_ideal{
 		                         zen_draw_hidden_field('productNum',$productNum).
 		                         zen_draw_hidden_field('cart_info',$cart_info).
 		                         zen_draw_hidden_field('cart_api',$cart_api);
-
+								 zen_draw_hidden_field('pay_cpf',$pay_cpf).
+								 zen_draw_hidden_field('pay_bankCode',$pay_bankCode).
+								 zen_draw_hidden_field('pay_countryCode',$pay_countryCode);
 								 	
 		return $process_button_string;	
 	}
@@ -299,7 +310,7 @@ class oceanpayment_ideal{
 		//消费者所在国
 		$payment_country  = $_REQUEST['payment_country'];
 		//获取本地的code值
-		$secureCode       = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SCODE;
+		$secureCode       = MODULE_PAYMENT_OCEANPAYMENT_OXXO_SCODE;
 		//返回支付信用卡卡号
 		$card_number      = $_REQUEST['card_number'];
 		//返回交易类型
@@ -324,7 +335,7 @@ class oceanpayment_ideal{
 	
 			if ($payment_status == 1) {				 
 				//支付成功
-				$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SUCCESS_STATUS_ID;
+				$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_OXXO_SUCCESS_STATUS_ID;
 				$comments           = 'Success.';
 				$messageStack->add_session('checkout_success', $comments . $payment_details, 'success');
 				$customer_notified  = 1;			 
@@ -333,12 +344,12 @@ class oceanpayment_ideal{
 				
 				//是否预授权交易
 				if($payment_authType == 1){
-					$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SUCCESS_STATUS_ID;
+					$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_OXXO_SUCCESS_STATUS_ID;
 					$comments           = 'Success.';
 					$messageStack->add_session('checkout_success', $comments . $payment_details, 'success');
 					$customer_notified  = 1;
 				}else{
-					$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_WAITING_PROCESS_STATUS_ID;
+					$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_OXXO_WAITING_PROCESS_STATUS_ID;
 					$comments           = 'Waiting for the bank processing.';
 					$messageStack->add_session('checkout_waiting', $comments . $payment_details, 'caution');
 					$customer_notified  = 0;
@@ -346,7 +357,7 @@ class oceanpayment_ideal{
 				
 			}elseif($payment_status == 0){				 
 				//支付失败
-				$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_FAILURE_STATUS_ID;
+				$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_OXXO_FAILURE_STATUS_ID;
 				$comments           = 'Failure.';
 				$messageStack->add_session('checkout_failure', $comments . $payment_details, 'error');
 				$customer_notified  = 0;				 
@@ -354,7 +365,7 @@ class oceanpayment_ideal{
 			 
 		}else{			 
 			//支付失败
-			$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_FAILURE_STATUS_ID;
+			$this->order_status = MODULE_PAYMENT_OCEANPAYMENT_OXXO_FAILURE_STATUS_ID;
 			$comments           = 'Failure.';
 			$messageStack->add_session('checkout_failure', $comments . $payment_details, 'error');
 			$customer_notified  = 0;			 
@@ -427,7 +438,7 @@ class oceanpayment_ideal{
 		//具体详细信息
 		$push_details  	   = $_REQUEST['push_details'];		
 		//获取securecode
-		$securecode        = MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SCODE;		
+		$securecode        = MODULE_PAYMENT_OCEANPAYMENT_OXXO_SCODE;		
 		//订单支付时间
 		$payment_dateTime  = $_REQUEST['payment_dateTime'];		
 		//推送时间
@@ -523,7 +534,7 @@ class oceanpayment_ideal{
 		global $db;
 	
 		if (!isset($this->_check)) {	
-			$check_query = $db->Execute("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_STATUS'");	
+			$check_query = $db->Execute("select configuration_value from " . TABLE_CONFIGURATION . " where configuration_key = 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_STATUS'");	
 			$this->_check = $check_query->RecordCount();	
 		}	
 		return $this->_check;	
@@ -533,52 +544,52 @@ class oceanpayment_ideal{
 	function install() {	
 		global $db, $language, $module_type;
 	
-		if (!defined('MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_1_1')) include(DIR_FS_CATALOG_LANGUAGES . $_SESSION['language'] . '/modules/' . $module_type . '/' . $this->code . '.php');
+		if (!defined('MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_1_1')) include(DIR_FS_CATALOG_LANGUAGES . $_SESSION['language'] . '/modules/' . $module_type . '/' . $this->code . '.php');
 		
 		//在数据库中插入模块设置(是否启用插件)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_1_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_STATUS', 'True', '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_1_2 . "', '6', '0', 'zen_cfg_select_option(array(\'True\', \'False\'), ', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_1_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_STATUS', 'True', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_1_2 . "', '6', '0', 'zen_cfg_select_option(array(\'True\', \'False\'), ', now())");
 		//在数据库中插入模块设置(填写账户)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_3_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_ACCOUNT', '', '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_3_2 . "', '6', '2', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_3_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_ACCOUNT', '', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_3_2 . "', '6', '2', now())");
 		//在数据库中插入模块设置(填写终端号)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_4_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TERMINAL', '', '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_4_2 . "', '6', '4', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_4_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_TERMINAL', '', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_4_2 . "', '6', '4', now())");
 		//在数据库中插入模块设置(终端安全码)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_5_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SCODE', '', '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_5_2 . "', '6', '6', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_5_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_SCODE', '', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_5_2 . "', '6', '6', now())");
 		//在数据库中插入模块设置(支付地区)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_6_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_ZONE', '0', '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_6_2 . "', '6', '8', 'zen_get_zone_class_title', 'zen_cfg_pull_down_zone_classes(', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_6_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_ZONE', '0', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_6_2 . "', '6', '8', 'zen_get_zone_class_title', 'zen_cfg_pull_down_zone_classes(', now())");
 		//在数据库中插入模块设置(默认订单状态)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_7_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_PENDING_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_7_2 . "', '6', '10', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_7_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_PENDING_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_7_2 . "', '6', '10', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
 		//在数据库中插入模块设置(成功订单状态)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_8_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SUCCESS_STATUS_ID', '2', '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_8_2 . "', '6', '12', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_8_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_SUCCESS_STATUS_ID', '2', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_8_2 . "', '6', '12', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
 		//在数据库中插入模块设置(失败订单状态)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_9_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_FAILURE_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_9_2 . "', '6', '14', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_9_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_FAILURE_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_9_2 . "', '6', '14', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
 		//在数据库中插入模块设置(待处理订单状态)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_10_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_WAITING_PROCESS_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_10_2 . "', '6', '16', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, use_function, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_10_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_WAITING_PROCESS_STATUS_ID', '1', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_10_2 . "', '6', '16', 'zen_get_order_status_name', 'zen_cfg_pull_down_order_statuses(', now())");
 		//在数据库中插入模块设置(支付模块排序)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_11_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SORT_ORDER', '0', '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_11_2 . "', '6', '18', now())");
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_11_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_SORT_ORDER', '0', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_11_2 . "', '6', '18', now())");
 		//在数据库中插入模块设置(支付提交地址)
-		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_12_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_HANDLER', 'https://secure.oceanpayment.com/gateway/service/test', '" . MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TEXT_CONFIG_12_2 . "', '6', '20', '', now())");				
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_12_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_HANDLER', 'https://secure.oceanpayment.com/gateway/service/test', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_12_2 . "', '6', '20', '', now())");				
 	}
 	
 	
 	function remove() {	
 		global $db;	
-		$db->Execute("delete from " . TABLE_CONFIGURATION . " where configuration_key LIKE  'MODULE_PAYMENT_OCEANPAYMENT_IDEAL%'");	
+		$db->Execute("delete from " . TABLE_CONFIGURATION . " where configuration_key LIKE  'MODULE_PAYMENT_OCEANPAYMENT_OXXO%'");	
 	}
 	
 	
 	function keys() {	
 		return array(	
-				'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_STATUS',
-				'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_ACCOUNT',
-				'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_TERMINAL',
-				'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SCODE',
-				'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_ZONE',
-				'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_PENDING_STATUS_ID',
-				'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SUCCESS_STATUS_ID',
-				'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_FAILURE_STATUS_ID',
-				'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_WAITING_PROCESS_STATUS_ID',
-				'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_SORT_ORDER',
-				'MODULE_PAYMENT_OCEANPAYMENT_IDEAL_HANDLER',				
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_STATUS',
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_ACCOUNT',
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_TERMINAL',
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_SCODE',
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_ZONE',
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_PENDING_STATUS_ID',
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_SUCCESS_STATUS_ID',
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_FAILURE_STATUS_ID',
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_WAITING_PROCESS_STATUS_ID',
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_SORT_ORDER',
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_HANDLER',				
 		);	
 	}
 	
@@ -705,6 +716,22 @@ class oceanpayment_ideal{
 		$parameter = str_replace(array("<",">","'","\""),array("&lt;","&gt;","&#039;","&quot;"),$parameter);	
 		return $parameter;	
 	}
-
+	
+	
+	/**
+	 * 产生随机字符串
+	 *
+	 * @param    int        $length  输出长度
+	 * @param    string     $chars   可选的 ，默认为 0123456789
+	 * @return   string     字符串
+	 */
+	function random($length, $chars = '0123456789') {
+		$hash = '';
+		$max = strlen($chars) - 1;
+		for($i = 0; $i < $length; $i++) {
+			$hash .= $chars[mt_rand(0, $max)];
+		}
+		return $hash;
+	}
 		
 }

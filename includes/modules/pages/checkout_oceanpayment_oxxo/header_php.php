@@ -31,7 +31,7 @@
 
 	if($_REQUEST['response_type'] == 1 || isset($_REQUEST['notice_type'])){             //检测是否推送 1为推送 0为正常浏览器跳转
 		$_SESSION['order_number_created'] = $_REQUEST['order_number'];   //订单号
-		$_SESSION['payment'] = 'oceanpayment_ideal';     //支付方式
+		$_SESSION['payment'] = 'oceanpayment_oxxo';     //支付方式
 	
 	}else{
 		if (!$_SESSION['customer_id']) {
@@ -68,12 +68,12 @@
 			if($_REQUEST['payment_authType'] == 1){
 				$back_url = zen_href_link(FILENAME_CHECKOUT_SUCCESS, '', 'SSL');
 			}else{
-				$back_url = zen_href_link('checkout_oceanpayment_ideal_pending', '', 'SSL');
+				$back_url = zen_href_link('checkout_oceanpayment_oxxo_pending', '', 'SSL');
 			}
 			
 		} else {
 			//支付失败
-			$back_url = zen_href_link('checkout_oceanpayment_ideal_failure', '', 'SSL');
+			$back_url = zen_href_link('checkout_oceanpayment_oxxo_failure', '', 'SSL');
 		}
 		
 		echo '<script type="text/javascript">parent.location.replace("' . $back_url . '");</script>';
