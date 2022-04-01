@@ -18,7 +18,7 @@ define('TEXT_YOUR_ORDER_NUMBER', '<strong>Your Order Number is:</strong> ');
 define('TEXT_CHECKOUT_LOGOFF_GUEST', 'NOTE: To complete your order, a temporary account was created. You may close this account by clicking Log Off. Clicking Log Off also ensures that your receipt and purchase information is not visible to the next person using this computer. If you wish to continue shopping, feel free! You may log off at anytime using the link at the top of the page.');
 define('TEXT_CHECKOUT_LOGOFF_CUSTOMER', 'Thank you for shopping. Please click the Log Off link to ensure that your receipt and purchase information is not visible to the next person using this computer.');
 
-define('LOGO_SRC', DIR_WS_MODULES . 'payment/oceanpayment_cashu/failure.png');
+define('LOGO_SRC', DIR_WS_MODULES . 'payment/oceanpayment_giropay/failure.png');
 define('LOGO', '<img src="' . LOGO_SRC . '" />');
 
 
