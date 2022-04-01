@@ -20,15 +20,24 @@
 		$_REQUEST['signValue'] 	      = $xml->getElementsByTagName("signValue")->item(0)->nodeValue;
 		$_REQUEST['order_notes']	  = $xml->getElementsByTagName("order_notes")->item(0)->nodeValue;
 		$_REQUEST['card_number']	  = $xml->getElementsByTagName("card_number")->item(0)->nodeValue;
+		$_REQUEST['methods']	      = $xml->getElementsByTagName("methods")->item(0)->nodeValue;
+		$_REQUEST['payment_country']  = $xml->getElementsByTagName("payment_country")->item(0)->nodeValue;
 		$_REQUEST['payment_authType'] = $xml->getElementsByTagName("payment_authType")->item(0)->nodeValue;
 		$_REQUEST['payment_risk'] 	  = $xml->getElementsByTagName("payment_risk")->item(0)->nodeValue;
+		
+		$_REQUEST['notice_type'] 	  = $xml->getElementsByTagName("notice_type")->item(0)->nodeValue;
+		$_REQUEST['payment_dateTime'] = $xml->getElementsByTagName("payment_dateTime")->item(0)->nodeValue;
+		$_REQUEST['push_dateTime'] 	  = $xml->getElementsByTagName("push_dateTime")->item(0)->nodeValue;
+		$_REQUEST['push_id'] 	  	  = $xml->getElementsByTagName("push_id")->item(0)->nodeValue;
+		$_REQUEST['push_status'] 	  = $xml->getElementsByTagName("push_status")->item(0)->nodeValue;
+		$_REQUEST['push_details'] 	  = $xml->getElementsByTagName("push_details")->item(0)->nodeValue;
 	
 	}
 	
 
-	if($_REQUEST['response_type'] == 1){             //检测是否推送 1为推送 0为正常浏览器跳转
+	if($_REQUEST['response_type'] == 1 || isset($_REQUEST['notice_type'])){             //检测是否推送 1为推送 0为正常浏览器跳转
 		$_SESSION['order_number_created'] = $_REQUEST['order_number'];   //订单号
-		$_SESSION['payment'] = 'oceanpayment_creditcard';     //支付方式
+		$_SESSION['payment'] = 'oceanpayment_p24';     //支付方式
 	
 	}else{
 		if (!$_SESSION['customer_id']) {
@@ -36,9 +45,12 @@
 		}
 	}
 	
+	
+	
+	
 
 	require(DIR_WS_MODULES . zen_get_module_directory('require_languages.php'));
-	if (isset($_REQUEST['payment_status'])) {
+	if (isset($_REQUEST['payment_status']) || isset($_REQUEST['notice_type'])) {
 		// load selected payment module
 		require(DIR_WS_CLASSES . 'payment.php');
 		
@@ -46,15 +58,8 @@
 		
 		$payment_modules->before_process();
 		
-		if($_REQUEST['payment_status'] == 1 && $_REQUEST['response_type'] == 0){
-
-			$_SESSION['cart']->reset(true);
-
- 		}
 
 		// unregister session variables used during checkout
-		
-		unset($_SESSION['cart']);
 		unset($_SESSION['sendto']);
 		unset($_SESSION['billto']);
 		unset($_SESSION['shipping']);
@@ -62,19 +67,29 @@
 		unset($_SESSION['comments']);
 		
 
-		
 		if($_REQUEST['payment_status'] == 1){
-			echo '<script type="text/javascript">parent.location.replace("' . zen_href_link(FILENAME_CHECKOUT_SUCCESS, '', 'SSL') . '");</script>';
-			exit();
+			//支付成功
+			$_SESSION['cart']->reset(true);
+			$back_url = zen_href_link(FILENAME_CHECKOUT_SUCCESS, '', 'SSL');
 		} elseif($_REQUEST['payment_status'] == -1 ) {
-			echo '<script type="text/javascript">parent.location.replace("' . zen_href_link('checkout_oceanpayment_poli_waiting', '', 'SSL') . '");</script>';
-			exit();
+			//待处理
+			$_SESSION['cart']->reset(true);
+			//是否预授权交易
+			if($_REQUEST['payment_authType'] == 1){
+				$back_url = zen_href_link(FILENAME_CHECKOUT_SUCCESS, '', 'SSL');
+			}else{
+				$back_url = zen_href_link('checkout_oceanpayment_p24_pending', '', 'SSL');
+			}
+			
 		} else {
-			echo '<script type="text/javascript">parent.location.replace("' . zen_href_link('checkout_oceanpayment_poli_failure', '', 'SSL') . '");</script>';
-			exit();
+			//支付失败
+			$back_url = zen_href_link('checkout_oceanpayment_p24_failure', '', 'SSL');
 		}
 
 		
+		echo '<script type="text/javascript">parent.location.replace("' . $back_url . '");</script>';
+		
+		exit();
 	} else {
 		
 	}
@@ -93,6 +108,7 @@
 			return true;
 		}
 	}
+	
 	
 	$breadcrumb->add(NAVBAR_TITLE);
 ?>
