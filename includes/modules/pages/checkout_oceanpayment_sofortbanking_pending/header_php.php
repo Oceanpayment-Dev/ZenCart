@@ -42,11 +42,6 @@ $payment_details = isset($_SESSION['payment_details']) ? $_SESSION['payment_deta
 $payment_solutions = isset($_SESSION['payment_solutions']) ? $_SESSION['payment_solutions'] : '';
 
 
-
-
-
-
-
 // This should be last line of the script:
 $zco_notifier->notify('NOTIFY_HEADER_END_CHECKOUT_SUCCESS');
 ?>

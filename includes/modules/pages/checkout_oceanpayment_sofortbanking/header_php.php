@@ -1,12 +1,11 @@
 <?php    
 
-	//输入流
+    //输入流
 	$xml_str = file_get_contents("php://input");
 
 	//判断返回的输入流是否为xml
 	if(xml_parser($xml_str)){
 		$xml = simplexml_load_string($xml_str);
-				
 		//把推送参数赋值到$_REQUEST
 		$_REQUEST['response_type']	  = (string)$xml->response_type;
 		$_REQUEST['account']		  = (string)$xml->account;
@@ -25,21 +24,18 @@
 		$_REQUEST['methods'] 	  	  = (string)$xml->methods;
 		$_REQUEST['payment_country']  = (string)$xml->payment_country;
 		$_REQUEST['payment_solutions']= (string)$xml->payment_solutions;
-	
 	}
 	
 
-	if($_REQUEST['response_type'] == 1){             //检测是否推送 1为推送 0为正常浏览器跳转
+    if($_REQUEST['response_type'] == 1){             //检测是否推送 1为推送 0为正常浏览器跳转
 		$_SESSION['order_number_created'] = $_REQUEST['order_number'];   //订单号
-		$_SESSION['payment'] = 'oceanpayment_creditcard';     //支付方式
+		$_SESSION['payment'] = 'oceanpayment_sofortbanking';     //支付方式
 	
 	}else{
 		if (!$_SESSION['customer_id']) {
 			zen_redirect(zen_href_link(FILENAME_TIME_OUT));
 		}
 	}
-	
-	
 	
 	
 
@@ -64,25 +60,24 @@
 		if($_REQUEST['payment_status'] == 1){
 			//支付成功
 			$_SESSION['cart']->reset(true);
-			echo '<script type="text/javascript">parent.location.replace("' . zen_href_link(FILENAME_CHECKOUT_SUCCESS, '', 'SSL') . '");</script>';
+			$back_url = zen_href_link(FILENAME_CHECKOUT_SUCCESS, '', 'SSL');
 		} elseif($_REQUEST['payment_status'] == -1 ) {
 			//待处理
 			$_SESSION['cart']->reset(true);
 			//是否预授权交易
 			if($_REQUEST['payment_authType'] == 1){
-				echo '<script type="text/javascript">parent.location.replace("' . zen_href_link(FILENAME_CHECKOUT_SUCCESS, '', 'SSL') . '");</script>';
+				$back_url = zen_href_link(FILENAME_CHECKOUT_SUCCESS, '', 'SSL');
 			}else{
-				echo '<script type="text/javascript">parent.location.replace("' . zen_href_link('checkout_oceanpayment_pending', '', 'SSL') . '");</script>';
+				$back_url = zen_href_link('checkout_oceanpayment_sofortbanking_pending', '', 'SSL');
 			}
 			
 		} else {
 			//支付失败
-			echo '<script type="text/javascript">parent.location.replace("' . zen_href_link('checkout_oceanpayment_failure', '', 'SSL') . '");</script>';
+			$back_url = zen_href_link('checkout_oceanpayment_sofortbanking_failure', '', 'SSL');
 		}
-
-		exit();
-	} else {
 		
+		echo '<script type="text/javascript">parent.location.replace("' . $back_url . '");</script>';
+		exit();
 	}
 	
 	
@@ -99,7 +94,6 @@
 			return true;
 		}
 	}
-	
 	
 	$breadcrumb->add(NAVBAR_TITLE);
 ?>
