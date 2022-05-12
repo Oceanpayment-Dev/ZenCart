@@ -400,8 +400,9 @@ class oceanpayment_oxxo{
 			
 		}
 		
-		
-		$this->returnLog($logtype);
+		if(MODULE_PAYMENT_OCEANPAYMENT_OXXO_LOGS == 'True'){
+		    $this->returnLog($logtype);
+		}
 		
 		$comments = $logtype . '(' .$comments . ')' . 'payment_id: ' . $payment_id . ' | order_number: ' . $order_number . ' | ' . $order_currency . ':' . $order_amount . ' | payment_details: ' . $payment_details;
 		$sql_data_array = array('orders_id'         => (int)$order_number,
@@ -568,6 +569,9 @@ class oceanpayment_oxxo{
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_11_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_SORT_ORDER', '0', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_11_2 . "', '6', '18', now())");
 		//在数据库中插入模块设置(支付提交地址)
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_12_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_HANDLER', 'https://secure.oceanpayment.com/gateway/service/test', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_12_2 . "', '6', '20', '', now())");				
+		//在数据库中插入模块设置（是否写日志）
+		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_19_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_OXXO_LOGS', 'True', '" . MODULE_PAYMENT_OCEANPAYMENT_OXXO_TEXT_CONFIG_19_2 . "', '6', '2', 'zen_cfg_select_option(array(\'True\', \'False\'), ', now())");
+
 	}
 	
 	
@@ -589,7 +593,8 @@ class oceanpayment_oxxo{
 				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_FAILURE_STATUS_ID',
 				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_WAITING_PROCESS_STATUS_ID',
 				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_SORT_ORDER',
-				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_HANDLER',				
+				'MODULE_PAYMENT_OCEANPAYMENT_OXXO_HANDLER',	
+                		'MODULE_PAYMENT_OCEANPAYMENT_OXXO_LOGS',			
 		);	
 	}
 	
