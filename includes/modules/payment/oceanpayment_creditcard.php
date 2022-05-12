@@ -471,9 +471,10 @@ class oceanpayment_creditcard extends base {
 			}
 			
 		}
-		
-		
-		$this->returnLog($logtype);
+
+        if(MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_LOGS == 'True'){
+            $this->returnLog($logtype);
+        }
 		
 		$comments = $logtype . '(' .$comments . ')' . 'payment_id: ' . $payment_id . ' | order_number: ' . $order_number . ' | ' . $order_currency . ':' . $order_amount . ' | payment_details: ' . $payment_details;
 		$sql_data_array = array('orders_id'         => (int)$order_number,
@@ -558,10 +559,12 @@ class oceanpayment_creditcard extends base {
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_TEXT_CONFIG_17_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_SECURE_CURRENCY', '', '" . MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_TEXT_CONFIG_17_2 . "', '6', '32', now())");
 		//在数据库中插入模块设置(填写3D金额)
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_TEXT_CONFIG_18_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_SECURE_AMOUNT', '', '" . MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_TEXT_CONFIG_18_2 . "', '6', '34', now())");
-		
-						
-		
-	}
+        //在数据库中插入模块设置（是否写日志）
+        $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_TEXT_CONFIG_19_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_LOGS', 'True', '" . MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_TEXT_CONFIG_19_2 . "', '6', '2', 'zen_cfg_select_option(array(\'True\', \'False\'), ', now())");
+
+
+
+    }
 	
 	
 	function remove() {	
@@ -590,6 +593,7 @@ class oceanpayment_creditcard extends base {
 				'MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_SECURE_SCODE',
 				'MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_SECURE_CURRENCY',
 				'MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_SECURE_AMOUNT',
+                'MODULE_PAYMENT_OCEANPAYMENT_CREDITCARD_LOGS',
 		);	
 	}
 	
