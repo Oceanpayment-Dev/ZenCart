@@ -418,9 +418,10 @@ class oceanpayment_p24{
 			}
 			
 		}
-		
-		
-		$this->returnLog($logtype);
+
+        if(MODULE_PAYMENT_OCEANPAYMENT_P24_LOGS == 'True'){
+            $this->returnLog($logtype);
+        }
 		
 		$comments = $logtype . '(' .$comments . ')' . 'payment_id: ' . $payment_id . ' | order_number: ' . $order_number . ' | ' . $order_currency . ':' . $order_amount . ' | payment_details: ' . $payment_details;
 		$sql_data_array = array('orders_id'         => (int)$order_number,
@@ -617,9 +618,11 @@ class oceanpayment_p24{
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_12_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_HANDLER', 'https://secure.oceanpayment.com/gateway/service/test', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_12_2 . "', '6', '20', '', now())");
 		//在数据库中插入模块设置(响应代码)
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_14_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_RESPONSE_CODE', 'false', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_14_2 . "', '6', '22', 'zen_cfg_select_option(array(\'Online\', \'Local\'), ', now())");
-		
-		
-	}
+        //在数据库中插入模块设置（是否写日志）
+        $db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_19_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_P24_LOGS', 'True', '" . MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_19_2 . "', '6', '2', 'zen_cfg_select_option(array(\'True\', \'False\'), ', now())");
+
+
+    }
 	
 	
 	function remove() {	
@@ -642,6 +645,7 @@ class oceanpayment_p24{
 				'MODULE_PAYMENT_OCEANPAYMENT_P24_SORT_ORDER',
 				'MODULE_PAYMENT_OCEANPAYMENT_P24_HANDLER',
 				'MODULE_PAYMENT_OCEANPAYMENT_P24_RESPONSE_CODE',
+                'MODULE_PAYMENT_OCEANPAYMENT_P24_LOGS',
 		);	
 	}
 	

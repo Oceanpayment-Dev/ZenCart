@@ -35,5 +35,7 @@
   define('MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_12_2', 'Oceanpayment Transaction page URL');  
   define('MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_14_1', 'Trans Response Code Mode');
   define('MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_14_2', 'Trans Response Code Mode');
+  define('MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_19_1', 'Write The Logs');
+  define('MODULE_PAYMENT_OCEANPAYMENT_P24_TEXT_CONFIG_19_2', 'Write The Logs');
   
 ?>
