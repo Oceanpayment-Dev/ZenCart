@@ -348,8 +348,11 @@ class oceanpayment_poli{
 			$logtype = '[Browser Return]';      //记录log类型
 		}
 		
+		
 		//记录return log
-		$this->returnlog($logtype);
+		if(MODULE_PAYMENT_OCEANPAYMENT_POLI_LOGS == 'True'){
+		    $this->returnLog($logtype);
+		}
 		
 
 		//加密串校验
@@ -475,6 +478,8 @@ class oceanpayment_poli{
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_POLI_TEXT_CONFIG_11_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_POLI_SORT_ORDER', '0', '" . MODULE_PAYMENT_OCEANPAYMENT_POLI_TEXT_CONFIG_11_2 . "', '6', '20', now())");
 		//在数据库中插入模块设置(支付提交地址)
 		$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_POLI_TEXT_CONFIG_12_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_POLI_HANDLER', 'https://secure.oceanpayment.com/gateway/service/test', '" . MODULE_PAYMENT_OCEANPAYMENT_POLI_TEXT_CONFIG_12_2 . "', '6', '22', '', now())");
+		//在数据库中插入模块设置（是否写日志）
+        	$db->Execute("insert into " . TABLE_CONFIGURATION . " (configuration_title, configuration_key, configuration_value, configuration_description, configuration_group_id, sort_order, set_function, date_added) values ('" . MODULE_PAYMENT_OCEANPAYMENT_POLI_TEXT_CONFIG_19_1 . "', 'MODULE_PAYMENT_OCEANPAYMENT_POLI_LOGS', 'True', '" . MODULE_PAYMENT_OCEANPAYMENT_POLI_TEXT_CONFIG_19_2 . "', '6', '2', 'zen_cfg_select_option(array(\'True\', \'False\'), ', now())");
 
 	}
 	
@@ -498,6 +503,7 @@ class oceanpayment_poli{
 				'MODULE_PAYMENT_OCEANPAYMENT_POLI_WAITING_PROCESS_STATUS_ID',
 				'MODULE_PAYMENT_OCEANPAYMENT_POLI_SORT_ORDER',
 				'MODULE_PAYMENT_OCEANPAYMENT_POLI_HANDLER',
+                		'MODULE_PAYMENT_OCEANPAYMENT_POLI_LOGS',
 		);	
 	}
 	
