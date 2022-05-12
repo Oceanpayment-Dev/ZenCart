@@ -39,6 +39,8 @@
   define('MODULE_PAYMENT_OCEANPAYMENT_POLI_TEXT_CONFIG_11_2', 'Sort order of display. Lowest is displayed first.');  
   define('MODULE_PAYMENT_OCEANPAYMENT_POLI_TEXT_CONFIG_12_1', 'Oceanpayment Transaction page URL<br />Test: <code>https://secure.oceanpayment.com/gateway/service/test</code><br />Pay: <code>https://secure.oceanpayment.com/gateway/service/pay</code>');  
   define('MODULE_PAYMENT_OCEANPAYMENT_POLI_TEXT_CONFIG_12_2', 'Oceanpayment Transaction page URL');  
+  define('MODULE_PAYMENT_OCEANPAYMENT_POLI_TEXT_CONFIG_19_1', 'Write The Logs');
+  define('MODULE_PAYMENT_OCEANPAYMENT_POLI_TEXT_CONFIG_19_2', 'Write The Logs');
 
   
   
