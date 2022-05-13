@@ -5,7 +5,6 @@ Oceanpayment supports mainstream open-source payment plug-ins, such as Magento, 
 Zen Cart is a free shopping cart software-used to build your own online store, designed for online sellers. Zen Cart is a free, user-friendly, open source shopping cart software.
 <ul>
   <li>Supports Card Payments and Alternative Payments embedded plug-ins.</li>
-  <li>Support program version V1.x.x.</li>
 </ul>
 <h4>Plug-in installation</h4>
 <ol>
