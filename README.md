@@ -15,52 +15,44 @@ Zen Cart is a free shopping cart software-used to build your own online store, d
 </ol>
 <table>
   <tr>
-    <td>Account</td>
+    <td>Enable Embedded mode</td>
+    <td>True</td>
+  </tr>
+  <tr>
+    <td>Enable Oceanpayment Module</td>
+    <td>True</td>
+  </tr>
+  <tr>
+    <td>Oceanpayment account ID</td>
     <td>Provide by Oceanpayment technical support.</td>
   </tr>
   <tr>
-    <td>Terminal</td>
+    <td>Oceanpayment terminal ID</td>
     <td>Provide by Oceanpayment technical support.</td>
   </tr>
   <tr>
-    <td>SecureCode</td>
+    <td>Oceanpayment secureCode</td>
     <td>Provide by Oceanpayment technical support.</td>
-  </tr>
-  <tr>
-    <td>3D Authorized Servive</td>
-    <td>Off</td>
-  </tr>
+  </tr>  
   <tr>
     <td>Oceanpayment transation URL</td>
     <td>Production environment：https://secure.oceanpayment.com/gateway/service/pay<br>
       Sandbox environment：https://test-secure.oceanpayment.com/gateway/service/pay</td>
   </tr>
   <tr>
-    <td>Pay Mode</td>
-    <td>Redirect:Redirect to open payment page<br>Iframe:iframe payment page.</td>
+    <td>Payment Zone</td>
+    <td>none</td>
   </tr>  
   <tr>
-    <td>Default Order Status</td>
-    <td>pending</td>
+    <td>Set Pending Notification Status</td>
+    <td>Pending</td>
   </tr>
   <tr>
-    <td>Success Order Status</td>
-    <td>Processed</td>
+    <td>Successfuly set the order status</td>
+    <td>Processing</td>
   </tr>
    <tr>
     <td>Failed Order Status</td>
     <td>Failed</td>
-  </tr>
-  <tr>
-    <td>Pending Order Status</td>
-    <td>Pending</td>
-  </tr>
-  <tr>
-    <td>Geo Zone</td>
-    <td>All Zones</td>
-  </tr>
-  <tr>
-    <td>Response Code Mode</td>
-    <td>Local</td>
-  </tr>
+  </tr> 
 </table>
