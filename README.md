@@ -1,15 +1,66 @@
-<h2>概述</h4>
-Oceanpayment支持主流的开源程序Magento，WordPress，Opencart，Prestashop，Zen Cart等支付插件，安装便捷，节约开发成本和资源。
-
-<h2>Zencart支付插件</h2>
-<h4>介绍</h4>
-Zen Cart是免费的购物车软件-用于建立自己的网上商店，为网上销售商而设计。Zen Cart是一个免费、界面友好，开放式源码的购物车软件。
+<h2>Overview</h4>
+Oceanpayment supports mainstream open-source payment plug-ins, such as Magento, WordPress, OpenCart, PrestaShop, and Zen Cart, which are easy to install and save development costs and resources. 
+<h2>Opencart plug-in</h2>
+<h4>Introduce</h4>
+Zen Cart is a free shopping cart software-used to build your own online store, designed for online sellers. Zen Cart is a free, user-friendly, open source shopping cart software.
 <ul>
-  <li>信用卡支付和本地支付插件支持内嵌功能。</li>
+  <li>Supports Card Payments and Alternative Payments embedded plug-ins.</li>
+  <li>Support program version V1.x.x.</li>
 </ul>
-<h4>安装</h4>
+<h4>Plug-in installation</h4>
 <ol>
-    <li>将includes和oceanpayment_log文件夹覆盖到网站根目录。</li>
-    <li>启用支付插件。</li>
-    <li>配置Oceanpayment账户信息。</li>
+    <li>Overwrite the includes and oceanpayment_log folders to the root directory of the website.</li>
+    <li>Enable payment plug-in.</li>
+    <li>Configure Oceanpayment account information.</li>
 </ol>
+<table>
+  <tr>
+    <td>Account</td>
+    <td>Provide by Oceanpayment technical support.</td>
+  </tr>
+  <tr>
+    <td>Terminal</td>
+    <td>Provide by Oceanpayment technical support.</td>
+  </tr>
+  <tr>
+    <td>SecureCode</td>
+    <td>Provide by Oceanpayment technical support.</td>
+  </tr>
+  <tr>
+    <td>3D Authorized Servive</td>
+    <td>Off</td>
+  </tr>
+  <tr>
+    <td>Oceanpayment transation URL</td>
+    <td>Production environment：https://secure.oceanpayment.com/gateway/service/pay<br>
+      Sandbox environment：https://test-secure.oceanpayment.com/gateway/service/pay</td>
+  </tr>
+  <tr>
+    <td>Pay Mode</td>
+    <td>Redirect:Redirect to open payment page<br>Iframe:iframe payment page.</td>
+  </tr>  
+  <tr>
+    <td>Default Order Status</td>
+    <td>pending</td>
+  </tr>
+  <tr>
+    <td>Success Order Status</td>
+    <td>Processed</td>
+  </tr>
+   <tr>
+    <td>Failed Order Status</td>
+    <td>Failed</td>
+  </tr>
+  <tr>
+    <td>Pending Order Status</td>
+    <td>Pending</td>
+  </tr>
+  <tr>
+    <td>Geo Zone</td>
+    <td>All Zones</td>
+  </tr>
+  <tr>
+    <td>Response Code Mode</td>
+    <td>Local</td>
+  </tr>
+</table>
