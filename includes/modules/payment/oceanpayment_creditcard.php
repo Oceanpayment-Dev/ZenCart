@@ -160,9 +160,9 @@ class oceanpayment_creditcard extends base {
 		//订单号
 		$order_number      = $order_id;
 		//账单人名
-		$billing_firstName = $this->OceanHtmlSpecialChars($order->billing['firstname']);
+		$billing_firstName = substr(urlencode($this->OceanHtmlSpecialChars($order->billing['firstname'])),0,50);
 		//账单人姓
-		$billing_lastName  = $this->OceanHtmlSpecialChars($order->billing['lastname']);
+		$billing_lastName  = substr(urlencode($this->OceanHtmlSpecialChars($order->billing['lastname'])),0,50);
 		//账单人email
 		$billing_email     = $this->OceanHtmlSpecialChars($order->customer['email_address']);
 		//账单人电话
@@ -183,9 +183,9 @@ class oceanpayment_creditcard extends base {
 		$signValue         = hash("sha256",$account.$terminal.$backUrl.$order_number.$order_currency.$order_amount.$billing_firstName.$billing_lastName.$billing_email.$secureCode);
 		//收货人地址信息
 		//收货人名
-		$ship_firstName    = $order->delivery['firstname'];		
+		$ship_firstName    = substr(urlencode($this->OceanHtmlSpecialChars($order->delivery['firstname'])),0,50);	
 		//收货人姓
-		$ship_lastName	   = $order->delivery['lastname'];		
+		$ship_lastName	   = substr(urlencode($this->OceanHtmlSpecialChars($order->delivery['lastname'])),0,50);	
 		//收货人手机
 		$ship_phone 	   = $order->customer['telephone'];			
 		//收货人国家
